@@ -91,7 +91,7 @@ class MovieListPresenterImpl implements MovieListPresenter {
     }
 
     @Override
-    public void deleteMovie(int id) {
+    public void deleteMovie(Integer id) {
         mMovieService.deleteMovie(id)
                 .subscribeOn(Schedulers.io())
                 .flatMap(new SingleResponseFlatMap<>())

@@ -1,5 +1,7 @@
 package ru.myproject.ws_home_work6.network.service;
 
+import android.util.Log;
+
 import com.google.gson.annotations.JsonAdapter;
 
 import java.util.ArrayList;

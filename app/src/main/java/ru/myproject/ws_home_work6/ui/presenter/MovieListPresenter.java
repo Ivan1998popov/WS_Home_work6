@@ -12,7 +12,7 @@ public interface MovieListPresenter {
 
     void createMovie(Movie movie);
 
-    void deleteMovie(int id);
+    void deleteMovie(Integer id);
 
     interface View {
         void addLoadedItems(ArrayList<Movie> items);

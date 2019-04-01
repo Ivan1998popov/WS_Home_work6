@@ -67,7 +67,8 @@ public class EditAddMovieFragment extends Fragment {
             movie.setActors(null);
             movie.setAwards(null);
             movie.setWebsite(null);
-            System.out.println(movie.getId());
+            movie.setId(null);
+         //   System.out.println(movie.getId());
             movie.setPoster("movie1");
             editButton.setOnClickListener(v1 -> {
                 movie.setTitle(title.getText().toString());

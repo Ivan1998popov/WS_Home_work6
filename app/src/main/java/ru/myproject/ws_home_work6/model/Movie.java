@@ -19,7 +19,7 @@ public class Movie implements Serializable {
     private String poster;
 
 
-    private int id;
+    private Integer id;
 
     public Movie(){
 
@@ -30,8 +30,8 @@ public class Movie implements Serializable {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id +1;
+    public void setId(Integer id) {
+        this.id=id;
     }
     public String getWebsite() {
         return website;

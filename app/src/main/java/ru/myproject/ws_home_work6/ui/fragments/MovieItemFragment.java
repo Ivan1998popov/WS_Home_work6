@@ -23,7 +23,7 @@ public class MovieItemFragment extends Fragment {
     private TextView plot;
     private TextView year;
     private TextView rate;
-    private int id_item;
+    private Integer id_item;
     private ImageView editMovie;
 
     @Nullable
