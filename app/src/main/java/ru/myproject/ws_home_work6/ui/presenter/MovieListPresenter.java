@@ -6,6 +6,9 @@ import ru.myproject.ws_home_work6.model.Movie;
 
 public interface MovieListPresenter {
 
+
+    void loadItemMovieList(Integer id);
+
     void loadMovieList();
 
     void updateMovie(Movie movie);
@@ -16,5 +19,8 @@ public interface MovieListPresenter {
 
     interface View {
         void addLoadedItems(ArrayList<Movie> items);
+    }
+    interface ViewMovie {
+        void addLoadedMovie(Movie movie);
     }
 }

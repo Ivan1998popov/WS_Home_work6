@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,6 +28,10 @@ public class EditAddMovieFragment extends Fragment {
     EditText plot;
     EditText rate;
     EditText year;
+    EditText awards;
+    EditText actors;
+    EditText website;
+    CheckBox is_website;
     Button editButton;
     View v;
     MovieListPresenter presenter;
@@ -39,6 +45,10 @@ public class EditAddMovieFragment extends Fragment {
         plot = v.findViewById(R.id.plot);
         year = v.findViewById(R.id.year);
         rate = v.findViewById(R.id.rate);
+        awards = v.findViewById(R.id.text_awards);
+        actors = v.findViewById(R.id.text_actors);
+        website = v.findViewById(R.id.text_website);
+        is_website=v.findViewById(R.id.checkBox);
         editButton=v.findViewById(R.id.btn_edit);
 
         Bundle bundle =getArguments();
@@ -46,46 +56,66 @@ public class EditAddMovieFragment extends Fragment {
             Movie movie = (Movie)bundle.getSerializable("movie");
             title.setText(movie.getTitle());
             plot.setText(movie.getPlot());
+            awards.setText(movie.getAwards());
+            actors.setText(movie.getActors());
+            website.setText(movie.getWebsite());
             year.setText(String.valueOf(movie.getYear()));
             rate.setText(String.valueOf(movie.getRate()));
+
+            if(website.getText().toString().equals("N/A")){
+                website.setVisibility(View.GONE);
+            }else{
+                is_website.setChecked(true);
+            }
+
             editButton.setOnClickListener(v1 -> {
                 movie.setTitle(title.getText().toString());
                 movie.setPlot(plot.getText().toString());
+                movie.setAwards(awards.getText().toString());
+                movie.setActors(actors.getText().toString());
+                movie.setWebsite(website.getText().toString());
                 movie.setYear(Integer.parseInt(year.getText().toString()));
                 movie.setRate(Double.parseDouble(rate.getText().toString()));
+                if(check_year(year)&&check_rate(rate))
                 presenter.updateMovie(movie);
-//                InfoActivity activity =(InfoActivity)v.getContext();
-//                MovieListFragment movieListFragment =new MovieListFragment();
-//                FragmentManager fragmentManager =activity.getSupportFragmentManager();
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.fragment_container,movieListFragment)
-//                        .commit();
-//                clearStack(fragmentManager);
+                MovieListFragment movieListFragment =new MovieListFragment();
+                FragmentManager fragmentManager =getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container,movieListFragment)
+                        .commit();
+                clearStack(fragmentManager);
             });
         }else{
             Movie movie =new Movie();
-            movie.setActors(null);
-            movie.setAwards(null);
-            movie.setWebsite(null);
             movie.setId(null);
-         //   System.out.println(movie.getId());
+
             movie.setPoster("movie1");
             editButton.setOnClickListener(v1 -> {
                 movie.setTitle(title.getText().toString());
                 movie.setPlot(plot.getText().toString());
                 movie.setYear(Integer.parseInt(year.getText().toString()));
                 movie.setRate(Double.parseDouble(rate.getText().toString()));
+                movie.setActors(actors.getText().toString());
+                movie.setAwards(awards.getText().toString());
+
+                if(check_year(year)&&check_rate(rate))
                 presenter.createMovie(movie);
-//                InfoActivity activity = (InfoActivity) v.getContext();
-//                MovieListFragment movieListFragment = new MovieListFragment();
-//                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.fragment_container, movieListFragment)
-//                        .commit();
-//
-//                clearStack(fragmentManager);
+                MovieListFragment movieListFragment = new MovieListFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, movieListFragment)
+                        .commit();
+                clearStack(fragmentManager);
             });
         }
+        is_website.setOnClickListener(v1 -> {
+            if(is_website.isChecked()){
+                website.setVisibility(View.VISIBLE);
+            }else{
+                website.setVisibility(View.GONE);
+            }
+        });
+
 
         return v;
     }
@@ -109,4 +139,25 @@ public class EditAddMovieFragment extends Fragment {
         super.onAttach(context);
         presenter = new MovieListPresenterImpl();
     }
+
+    boolean check_rate(EditText rate){
+        double number=Double.parseDouble(rate.getText().toString());
+        if(0<number&&number<10){
+            return true;
+        }
+        Toast.makeText(getContext(),"Некорректно введен рейтинг фильма!",Toast.LENGTH_SHORT).show();
+        System.out.println(number);
+        return false;
+    }
+    boolean check_year(EditText year){
+        int number=Integer.parseInt(year.getText().toString());
+        if(2100>number&&number>1850){
+           return true;
+        }else{
+
+            Toast.makeText(getContext(),"Некорректно введена дата выхода фильма!",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
 }

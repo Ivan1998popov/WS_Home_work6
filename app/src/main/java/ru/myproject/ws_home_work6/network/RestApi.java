@@ -5,11 +5,14 @@ import android.content.Context;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+
 
 public class RestApi {
 
@@ -18,8 +21,11 @@ public class RestApi {
 
     private static Retrofit sRetrofit=null;
 
-    public  static  void init (){
-        OkHttpClient.Builder okHttpClient =new OkHttpClient.Builder();
+    public  static  void init (Authenticator authenticator){
+        OkHttpClient.Builder okHttpClient =new OkHttpClient.Builder()
+                .addInterceptor(new BearerAuthorizationInterceptor())
+                .authenticator(authenticator);
+
 
 
         HttpLoggingInterceptor interceptor =new HttpLoggingInterceptor();
@@ -29,7 +35,7 @@ public class RestApi {
         Gson gson =new GsonBuilder().create();
         sRetrofit=new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(BASE_URL)
                 .client(okHttpClient.build())
                 .build();

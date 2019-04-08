@@ -80,9 +80,9 @@ public class AdapterMovieList extends RecyclerView.Adapter<AdapterMovieList.MyVi
                     Log.d("msg", movie.getTitle());
 
 
-                    InfoActivity activity =(InfoActivity)v.getContext();
+                    InfoActivity activity =(InfoActivity) v.getContext();
 
-                    MovieItemFragment movieItemFragment = MovieItemFragment.newInstance(movie);
+                    MovieItemFragment movieItemFragment = MovieItemFragment.newInstance(movie.getId());
                     activity.getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.fragment_container, movieItemFragment)
